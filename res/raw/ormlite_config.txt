@@ -1,0 +1,161 @@
+#
+# generated on 2014/02/10 02:18:44
+#
+# --table-start--
+dataClass=com.telenav.jeff.vo.ExtraCost
+tableName=extra_cost
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=type
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=trip
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=cost
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.telenav.jeff.vo.ExtraCostType
+tableName=extra_cost_type
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=name
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.telenav.jeff.vo.GPSData
+tableName=gps_data
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=timeStamp
+# --field-end--
+# --field-start--
+fieldName=lat
+# --field-end--
+# --field-start--
+fieldName=lon
+# --field-end--
+# --field-start--
+fieldName=speed
+# --field-end--
+# --field-start--
+fieldName=heading
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.telenav.jeff.vo.Mileage
+tableName=mileage
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=startLocation
+foreign=true
+foreignAutoRefresh=true
+# --field-end--
+# --field-start--
+fieldName=endLocation
+foreign=true
+foreignAutoRefresh=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.telenav.jeff.vo.Segment
+tableName=segment
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=name
+# --field-end--
+# --field-start--
+fieldName=distance
+# --field-end--
+# --field-start--
+fieldName=trip
+foreign=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.telenav.jeff.vo.Trip
+tableName=trip
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=startLocation
+foreign=true
+foreignAutoRefresh=true
+# --field-end--
+# --field-start--
+fieldName=endLocation
+foreign=true
+foreignAutoRefresh=true
+# --field-end--
+# --field-start--
+fieldName=startAddress
+# --field-end--
+# --field-start--
+fieldName=endAddress
+# --field-end--
+# --field-start--
+fieldName=categroy
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=segments
+foreignCollection=true
+# --field-end--
+# --field-start--
+fieldName=extraCosts
+foreignCollection=true
+foreignCollectionForeignFieldName=trip
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.telenav.jeff.vo.TripCategory
+tableName=trip_category
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=name
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

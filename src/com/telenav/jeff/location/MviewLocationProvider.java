@@ -12,8 +12,9 @@ import com.telenav.jeff.vo.GPSData;
 public class MviewLocationProvider implements ILocationProvider
 {
     private ScheduledExecutorService scheduleService;
-    private AtomicBoolean isStarted = new AtomicBoolean();
     private ILocationListener locationListener;
+    
+    private GPSData currentGPS;
     
     /** 1 meter = 9 DM6 */
     private static final int METER_DM6_FACTOR = 9;
@@ -35,20 +36,20 @@ public class MviewLocationProvider implements ILocationProvider
         scheduleService = Executors.newSingleThreadScheduledExecutor();
         scheduleService.scheduleAtFixedRate(new GPSDataReceiver(), 0, interval, TimeUnit.MILLISECONDS);
         locationListener = listener;
-        isStarted.set(true);
     }
     
     private class GPSDataReceiver extends Thread
     {
+
         @Override
         public void run()
         {
             if (locationListener != null)
             {
-                GPSData data = parse(getMviewerData());
-                if (data != null)
+                currentGPS = parse(getMviewerData());
+                if (currentGPS != null)
                 {
-                    locationListener.locationUpdate(data);
+                    locationListener.locationUpdate(currentGPS);
                 }
             }
         }
@@ -63,10 +64,10 @@ public class MviewLocationProvider implements ILocationProvider
                 if (dataArray.length == 6)
                 {
                     gpsData = new GPSData();
-                    gpsData.lat = Double.valueOf(dataArray[1]) / 100000;
-                    gpsData.lon = Double.valueOf(dataArray[2]) / 100000;
-                    gpsData.speed = Double.valueOf(dataArray[3]) / METER_DM6_FACTOR;
-                    gpsData.heading = Double.valueOf(dataArray[4]);
+                    gpsData.setLat(Double.valueOf(dataArray[1]) / 100000);
+                    gpsData.setLon(Double.valueOf(dataArray[2]) / 100000);
+                    //gpsData.setSpeed(Double.valueOf(dataArray[3]) / METER_DM6_FACTOR);
+                    //gpsData.heading = Double.valueOf(dataArray[4]);
                 }
                 
             }
@@ -78,7 +79,6 @@ public class MviewLocationProvider implements ILocationProvider
     public void stopLocationUpdate()
     {
         scheduleService.shutdown();
-        isStarted.set(false);
     }
     
     
@@ -89,7 +89,7 @@ public class MviewLocationProvider implements ILocationProvider
         StringBuffer sb = new StringBuffer();
         try
         {
-            socket = new Socket("10.66.40.36", 11159);
+            socket = new Socket("10.66.40.32", 11159);
             socket.setSoTimeout(3000);
             is = socket.getInputStream();
             byte[] buffer = new byte[512];
@@ -104,7 +104,7 @@ public class MviewLocationProvider implements ILocationProvider
         }
         catch (Throwable ex)
         {
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
         finally
         {
@@ -141,12 +141,6 @@ public class MviewLocationProvider implements ILocationProvider
         }
         
         return sb.toString();
-    }
-
-    @Override
-    public boolean isStarted()
-    {
-        return isStarted.get();
     }
 
 }

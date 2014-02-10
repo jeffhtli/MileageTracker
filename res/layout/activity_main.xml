@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout1"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -23,7 +23,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="150dp"
+                android:layout_marginRight="5dp"
                 android:text="@string/stautslabel"
                 android:textSize="20dp" />
 
@@ -40,13 +40,14 @@
             android:layout_marginTop="20dp" >
 
             <TextView
-                android:layout_width="180dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
                 android:text="Current Trip:"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/distancefield"
+                android:id="@+id/distance_field"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="15.6 mile" />
@@ -55,87 +56,22 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical" >
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
                 android:text="GPS Data:"
                 android:textSize="20sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            
+            <TextView
+                android:id="@+id/location_field"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp" >
+                android:text="37.37348, -121.99899" />
 
-                <TextView
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:text="Lat:" />
-
-                <TextView
-                    android:id="@+id/latfield"
-                    android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:text="36.102364" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp" >
-
-                <TextView
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:text="Lon:" />
-
-                <TextView
-                    android:id="@+id/lonfield"
-                    android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:text="-110.23655" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp" >
-
-                <TextView
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:text="Speed:" />
-
-                <TextView
-                    android:id="@+id/speedfield"
-                    android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:text="23.123" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp" >
-
-                <TextView
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:text="Heading" />
-
-                <TextView
-                    android:id="@+id/headingfield"
-                    android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:text="45" />
-            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

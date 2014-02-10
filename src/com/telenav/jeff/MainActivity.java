@@ -4,35 +4,37 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import com.telenav.jeff.LocationService.LocationServiceBinder;
-import com.telenav.jeff.vo.GPSData;
-
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.telenav.jeff.MileageService.MileageServiceBinder;
+import com.telenav.jeff.sqlite.DatabaseHelper;
+import com.telenav.jeff.trip.TripManager;
+import com.telenav.jeff.vo.GPSData;
+
 public class MainActivity extends Activity
 {
+    private static final String LOG_TAG = "MainActivity";
     private TextView serviceStatusTextView;
     private TextView distanceTextView;
-    private TextView latTextView;
-    private TextView lonTextView;
-    private TextView speedTextView;
-    private TextView headingTextView;
+    private TextView locationTextView;
     private Button serviceSwitchBtn;
     private Button tripHistoryBtn;
     
-    private LocationService locationService;
-    private ScheduledExecutorService scheduleService;
+    private TripManager tripManager;
     private LocationServiceConnection locationServiceConnection;
+    private ScheduledExecutorService uiScheduleTask;
+    private Intent mileageServiceIntent;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -45,38 +47,109 @@ public class MainActivity extends Activity
     
     private void initialze()
     {
+        DatabaseHelper.init(this);
+        
         serviceStatusTextView = (TextView) findViewById(R.id.statusfield);
-        distanceTextView = (TextView) findViewById(R.id.distancefield);
-        latTextView = (TextView) findViewById(R.id.latfield);
-        lonTextView = (TextView) findViewById(R.id.lonfield);
-        speedTextView = (TextView) findViewById(R.id.speedfield);
-        headingTextView = (TextView) findViewById(R.id.headingfield);
+        distanceTextView = (TextView) findViewById(R.id.distance_field);
+        locationTextView = (TextView) findViewById(R.id.location_field);
+        
+        serviceStatusTextView.setText("Started");
+        distanceTextView.setText("-- MI");
+        locationTextView.setText("--, --");
         
         serviceSwitchBtn = (Button) findViewById(R.id.switchbtn);
         serviceSwitchBtn.setText("Stop");
-        serviceSwitchBtn.setOnClickListener(new SwitchBtnClickListener());
+        serviceSwitchBtn.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (tripManager.isTracking())
+                {
+                    tripManager.stopStrack();
+                    updateViewContent(false);
+                }
+                else
+                {
+                    tripManager.startTrack();
+                    updateViewContent(true);
+                }
+            }
+        });
         
         tripHistoryBtn = (Button) findViewById(R.id.historybtn);
         tripHistoryBtn.setText("View trip History");
+        tripHistoryBtn.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                startActivity(new Intent(MainActivity.this, TripsActivity.class));
+            }
+        });
         
-        serviceStatusTextView.setText("Started");
-        distanceTextView.setText("0 mile");
-        latTextView.setText("37.37348");
-        lonTextView.setText("-121.99899");
-        speedTextView.setText("23.123");
-        headingTextView.setText("45");
+        initService();
         
-        locationServiceConnection = new LocationServiceConnection();
+    }
 
-        bindService(new Intent(this, LocationService.class), locationServiceConnection, BIND_AUTO_CREATE);
+    private void initService()
+    {
+        mileageServiceIntent = new Intent(this, MileageService.class);
+        startService(mileageServiceIntent);
+        locationServiceConnection = new LocationServiceConnection();
+        bindService(mileageServiceIntent, locationServiceConnection, BIND_AUTO_CREATE);
         
-        startUpdateScreen();
+    }
+
+    private void updateViewContent(boolean isLocServiceStarted)
+    {
+        if (isLocServiceStarted)
+        {
+            serviceStatusTextView.setText("Started");
+            serviceSwitchBtn.setText("Stop");
+            
+            uiScheduleTask = Executors.newScheduledThreadPool(1);
+            uiScheduleTask.scheduleAtFixedRate(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    updateDistAndLoc();
+                    
+                }
+            }, 0, 20, TimeUnit.SECONDS);
+        }
+        else
+        {
+            serviceStatusTextView.setText("Stopped");
+            serviceSwitchBtn.setText("Start");
+            
+            if (uiScheduleTask != null)
+            {
+                uiScheduleTask.shutdown();
+            }
+        }
+         
     }
     
-    private void startUpdateScreen()
+    private void updateDistAndLoc()
     {
-        scheduleService = Executors.newSingleThreadScheduledExecutor();
-        scheduleService.scheduleAtFixedRate(new Updater(), 0, 3 * 1000, TimeUnit.MILLISECONDS);
+        runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                distanceTextView.setText(tripManager.getCurrentDistance() + " Meters");
+                
+                GPSData currentGPS = tripManager.getCurrentGPS();
+                String locString = "Unknown";
+                if (currentGPS != null)
+                {
+                    locString = currentGPS.getLat() + ", " + currentGPS.getLon();
+                }
+                locationTextView.setText(locString);
+            }
+        });
     }
     
     private class LocationServiceConnection implements ServiceConnection
@@ -84,90 +157,27 @@ public class MainActivity extends Activity
         @Override
         public void onServiceDisconnected(ComponentName name)
         {
-            locationService = null;
+            tripManager = null;
         }
         
         @Override
         public void onServiceConnected(ComponentName name, IBinder service)
         {
-            locationService = ((LocationServiceBinder)service).getService();
-            if (locationService.isLocationServiceStarted())
-            {
-                serviceSwitchBtn.setText("Stop");
-            }
-            else
-            {
-                serviceSwitchBtn.setText("Start");
-            }
-        }
-    }
-    
-    private class Updater extends Thread
-    {
-        @Override
-        public void run()
-        {
-            System.out.println("schedule task: update screen");
-            updateScreen();
-        }
-    }
-    
-    private class SwitchBtnClickListener implements OnClickListener
-    {
-        @Override
-        public void onClick(View v)
-        {
-            if (locationService.isLocationServiceStarted())
-            {
-                locationService.stopLocationUpdate();
-                scheduleService.shutdown();
-                serviceSwitchBtn.setText("Start");
-            }
-            else
-            {
-                locationService.requestLocationUpdate();
-                startUpdateScreen();
-                serviceSwitchBtn.setText("Stop");
-            }
-        }
-    }
-    
-    private void updateScreen()
-    {
-        if (locationService == null)
-        {
-            return;
-        }
-        
-        final GPSData loc = locationService.getLastKnownLocation();
-        if (loc != null)
-        {
-            runOnUiThread(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    distanceTextView.setText("Caclulating...");
-                    latTextView.setText(String.valueOf(loc.lat));
-                    lonTextView.setText(String.valueOf(loc.lon));
-                    speedTextView.setText(loc.speed + " m/s");
-                    headingTextView.setText(String.valueOf(loc.heading));
-                }
-            });
+            tripManager = ((MileageServiceBinder)service).getTripManager();
+            updateViewContent(tripManager.isTracking());
         }
     }
     
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event)
+    protected void onDestroy()
     {
-        if (keyCode == KeyEvent.KEYCODE_BACK)
+        Log.d(LOG_TAG, "onDestroy");
+        unbindService(locationServiceConnection);
+        
+        if (!tripManager.isTracking())
         {
-            return this.moveTaskToBack(false);
+            stopService(mileageServiceIntent);
         }
-        else
-        {
-            return super.onKeyUp(keyCode, event);   
-        }
+        super.onDestroy();
     }
-    
 }
