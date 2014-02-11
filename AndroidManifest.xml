@@ -25,7 +25,8 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".TripsActivity" />
+        <activity android:name=".TripListActivity" />
+        <activity android:name=".TripDetailsActivity"></activity>
         
         <service android:name="com.telenav.jeff.MileageService"></service>
     </application>

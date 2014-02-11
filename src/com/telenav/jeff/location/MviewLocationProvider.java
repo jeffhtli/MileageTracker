@@ -89,7 +89,7 @@ public class MviewLocationProvider implements ILocationProvider
         StringBuffer sb = new StringBuffer();
         try
         {
-            socket = new Socket("10.66.40.32", 11159);
+            socket = new Socket("10.66.40.35", 11159);
             socket.setSoTimeout(3000);
             is = socket.getInputStream();
             byte[] buffer = new byte[512];

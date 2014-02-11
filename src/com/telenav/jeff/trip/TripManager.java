@@ -89,6 +89,7 @@ public class TripManager implements ILocationListener
         
         mileage = new Mileage();
         mileage.setStartLocation(data);
+        mileage.setStartTimeStamp(System.currentTimeMillis());
         
         status = TripStatus.Started;
         

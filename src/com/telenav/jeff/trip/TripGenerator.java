@@ -14,6 +14,7 @@ import com.telenav.jeff.vo.GPSData;
 import com.telenav.jeff.vo.Mileage;
 import com.telenav.jeff.vo.Segment;
 import com.telenav.jeff.vo.Trip;
+import com.telenav.jeff.vo.TripCategory;
 
 public class TripGenerator
 {
@@ -46,6 +47,7 @@ public class TripGenerator
             Trip trip = new Trip();
             trip.setStartLocation(start);
             trip.setEndLocation(end);
+            trip.setStartTimeStamp(mileage.getStartTimeStamp());
             tripDAO.create(trip);
             
             Direction directions = MapService.getDirection(start.getLat(), start.getLon(), end.getLat(), end.getLon());
@@ -55,6 +57,11 @@ public class TripGenerator
             }
             else
             {
+                trip.setDistance(directions.distance);
+                
+                TripCategory tripCategory = DatabaseHelper.getInstance().getTripCategorys().get(0);
+                trip.setCategroy(tripCategory);
+                
                 ForeignCollection<Segment> segments = tripDAO.getEmptyForeignCollection("segments");
                 for (int i = 0; i<directions.roadName.size(); i++)
                 {
@@ -65,14 +72,13 @@ public class TripGenerator
                     
                     segments.add(seg);
                 }
-                
                 trip.setSegments(segments);
                 
                 Address startAddress = MapService.getAddress(start.getLat(), start.getLon());
                 Address endAddress = MapService.getAddress(end.getLat(), end.getLon());
                 
-                trip.setStartAddress(startAddress.firstLine + "\n" + startAddress.sencondLine);
-                trip.setEndAddress(endAddress.firstLine + "\n" + endAddress.sencondLine);
+                trip.setStartAddress(startAddress.firstLine + " " + startAddress.sencondLine);
+                trip.setEndAddress(endAddress.firstLine + " " + endAddress.sencondLine);
                 
                 tripDAO.update(trip);
                 mileageDAO.delete(mileage);

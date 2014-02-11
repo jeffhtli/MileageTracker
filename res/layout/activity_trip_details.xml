@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp" >
+
+        <TextView
+            android:id="@+id/trip_date"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="@string/trip_date" />
+
+        <TextView
+            android:id="@+id/detail_date_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp" >
+
+        <TextView
+            android:id="@+id/start_location_label"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="@string/start_location_label" />
+
+        <TextView
+            android:id="@+id/detail_start_location_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp" >
+
+        <TextView
+            android:id="@+id/TextView03"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="@string/end_location_label" />
+
+        <TextView
+            android:id="@+id/detail_end_location_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp" >
+
+        <TextView
+            android:id="@+id/TextView06"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="@string/mileage_label" />
+
+        <TextView
+            android:id="@+id/detail_mileage_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp" >
+
+        <TextView
+            android:id="@+id/listitem_date_textview"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="@string/trip_category" />
+
+        <TextView
+            android:id="@+id/detail_category_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp" >
+
+        <TextView
+            android:id="@+id/TextView04"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="@string/toll" />
+
+        <TextView
+            android:id="@+id/detial_toll_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp" >
+
+        <TextView
+            android:id="@+id/TextView05"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="@string/parking" />
+
+        <TextView
+            android:id="@+id/detail_parking_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp" >
+
+        <TextView
+            android:id="@+id/TextView07"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="@string/cost" />
+
+        <TextView
+            android:id="@+id/detail_cost_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_btn" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save_concur" />
+
+    </LinearLayout>
+
+</LinearLayout>

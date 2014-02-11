@@ -1,17 +1,17 @@
 package com.telenav.jeff.sqlite;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.telenav.jeff.R;
-import com.telenav.jeff.vo.ExtraCost;
-import com.telenav.jeff.vo.ExtraCostType;
 import com.telenav.jeff.vo.GPSData;
 import com.telenav.jeff.vo.Mileage;
 import com.telenav.jeff.vo.Segment;
@@ -27,6 +27,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
     private static DatabaseHelper instance;
     
     private static Context ctx;
+    
+    private static List<TripCategory> tripCategorys;
 
     private DatabaseHelper(Context context)
     {
@@ -58,15 +60,29 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
             TableUtils.createTable(connectionSource, TripCategory.class);
             TableUtils.createTable(connectionSource, Segment.class);
             TableUtils.createTable(connectionSource, GPSData.class);
-            TableUtils.createTable(connectionSource, ExtraCost.class);
-            TableUtils.createTable(connectionSource, ExtraCostType.class);
             TableUtils.createTable(connectionSource, Mileage.class);
+            
+            initCategoryData();
         }
         catch (SQLException e)
         {
             Log.e(DatabaseHelper.class.getName(), "Can't create database", e);
             throw new RuntimeException(e);
         }
+    }
+    
+    private void initCategoryData()
+    {
+        RuntimeExceptionDao<TripCategory, Integer> tripCategoryDAO = getRuntimeExceptionDao(TripCategory.class);
+        
+        TripCategory category = new TripCategory();
+        category.setName("Business");
+        tripCategoryDAO.create(category);
+        
+        category = new TripCategory();
+        category.setName("Personal");
+        tripCategoryDAO.create(category);
+        
     }
 
     @Override
@@ -79,8 +95,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
             TableUtils.dropTable(connectionSource, TripCategory.class, true);
             TableUtils.dropTable(connectionSource, Segment.class, true);
             TableUtils.dropTable(connectionSource, GPSData.class, true);
-            TableUtils.dropTable(connectionSource, ExtraCost.class, true);
-            TableUtils.dropTable(connectionSource, ExtraCostType.class, true);
             TableUtils.dropTable(connectionSource, Mileage.class, true);
             
             onCreate(db, connectionSource);
@@ -91,6 +105,17 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
             throw new RuntimeException(e);
         }
 
+    }
+    
+    public List<TripCategory> getTripCategorys()
+    {
+        if (tripCategorys == null)
+        {
+            RuntimeExceptionDao<TripCategory, Integer> tripCategoryDAO = getRuntimeExceptionDao(TripCategory.class);
+            tripCategorys = tripCategoryDAO.queryForAll();
+        }
+        
+        return tripCategorys;
     }
 
 }

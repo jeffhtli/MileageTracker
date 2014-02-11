@@ -9,6 +9,9 @@ public class Mileage
     @DatabaseField(generatedId = true)
     private int id;
     
+    @DatabaseField
+    private long startTimeStamp;
+    
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private GPSData startLocation;
     
@@ -43,6 +46,16 @@ public class Mileage
     public void setEndLocation(GPSData endLocation)
     {
         this.endLocation = endLocation;
+    }
+
+    public long getStartTimeStamp()
+    {
+        return startTimeStamp;
+    }
+
+    public void setStartTimeStamp(long startTimeStamp)
+    {
+        this.startTimeStamp = startTimeStamp;
     }
     
 }

@@ -1,42 +1,6 @@
 #
-# generated on 2014/02/10 02:18:44
+# generated on 2014/02/11 03:38:44
 #
-# --table-start--
-dataClass=com.telenav.jeff.vo.ExtraCost
-tableName=extra_cost
-# --table-fields-start--
-# --field-start--
-fieldName=id
-generatedId=true
-# --field-end--
-# --field-start--
-fieldName=type
-foreign=true
-# --field-end--
-# --field-start--
-fieldName=trip
-foreign=true
-# --field-end--
-# --field-start--
-fieldName=cost
-# --field-end--
-# --table-fields-end--
-# --table-end--
-#################################
-# --table-start--
-dataClass=com.telenav.jeff.vo.ExtraCostType
-tableName=extra_cost_type
-# --table-fields-start--
-# --field-start--
-fieldName=id
-generatedId=true
-# --field-end--
-# --field-start--
-fieldName=name
-# --field-end--
-# --table-fields-end--
-# --table-end--
-#################################
 # --table-start--
 dataClass=com.telenav.jeff.vo.GPSData
 tableName=gps_data
@@ -70,6 +34,9 @@ tableName=mileage
 # --field-start--
 fieldName=id
 generatedId=true
+# --field-end--
+# --field-start--
+fieldName=startTimeStamp
 # --field-end--
 # --field-start--
 fieldName=startLocation
@@ -130,17 +97,25 @@ fieldName=startAddress
 fieldName=endAddress
 # --field-end--
 # --field-start--
+fieldName=startTimeStamp
+# --field-end--
+# --field-start--
+fieldName=distance
+# --field-end--
+# --field-start--
 fieldName=categroy
 foreign=true
+foreignAutoRefresh=true
 # --field-end--
 # --field-start--
 fieldName=segments
 foreignCollection=true
 # --field-end--
 # --field-start--
-fieldName=extraCosts
-foreignCollection=true
-foreignCollectionForeignFieldName=trip
+fieldName=parkingFee
+# --field-end--
+# --field-start--
+fieldName=tollFee
 # --field-end--
 # --table-fields-end--
 # --table-end--

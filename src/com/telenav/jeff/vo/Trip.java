@@ -22,16 +22,24 @@ public class Trip
     
     @DatabaseField
     private String endAddress;
+    
+    @DatabaseField
+    private long startTimeStamp;
+    
+    @DatabaseField
+    private long distance;
 
-    @DatabaseField(foreign = true)
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private TripCategory categroy;
     
     @ForeignCollectionField(eager = false)
     private ForeignCollection<Segment> segments;
     
-    @ForeignCollectionField(eager = false, foreignFieldName="trip")
-    private ForeignCollection<ExtraCost> extraCosts;
-
+    @DatabaseField
+    private double parkingFee;
+    
+    @DatabaseField
+    private double tollFee;
     
     public int getId()
     {
@@ -83,16 +91,6 @@ public class Trip
         this.segments = segments;
     }
 
-    public ForeignCollection<ExtraCost> getExtraCosts()
-    {
-        return extraCosts;
-    }
-
-    public void setExtraCosts(ForeignCollection<ExtraCost> extraCosts)
-    {
-        this.extraCosts = extraCosts;
-    }
-
     public String getStartAddress()
     {
         return startAddress;
@@ -112,4 +110,45 @@ public class Trip
     {
         this.endAddress = endAddress;
     }
+
+    public long getStartTimeStamp()
+    {
+        return startTimeStamp;
+    }
+
+    public void setStartTimeStamp(long startTimeStamp)
+    {
+        this.startTimeStamp = startTimeStamp;
+    }
+
+    public long getDistance()
+    {
+        return distance;
+    }
+
+    public void setDistance(long distance)
+    {
+        this.distance = distance;
+    }
+
+    public double getParkingFee()
+    {
+        return parkingFee;
+    }
+
+    public void setParkingFee(double parkingFee)
+    {
+        this.parkingFee = parkingFee;
+    }
+
+    public double getTollFee()
+    {
+        return tollFee;
+    }
+
+    public void setTollFee(double tollFee)
+    {
+        this.tollFee = tollFee;
+    }
+    
 }
