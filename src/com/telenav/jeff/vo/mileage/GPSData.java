@@ -1,4 +1,4 @@
-package com.telenav.jeff.vo;
+package com.telenav.jeff.vo.mileage;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;

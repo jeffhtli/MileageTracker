@@ -26,7 +26,17 @@
         </activity>
         
         <activity android:name=".TripListActivity" />
-        <activity android:name=".TripDetailsActivity"></activity>
+        
+        <activity android:name=".TripDetailsActivity" >
+        </activity>
+        
+        <activity android:name=".ExportToConcurActivity" >
+        </activity>
+        
+        <activity
+            android:name=".ConcurLoginActivity"
+            android:noHistory="true" >
+        </activity>
         
         <service android:name="com.telenav.jeff.MileageService"></service>
     </application>

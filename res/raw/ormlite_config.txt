@@ -1,8 +1,8 @@
 #
-# generated on 2014/02/11 03:38:44
+# generated on 2014/02/11 05:00:01
 #
 # --table-start--
-dataClass=com.telenav.jeff.vo.GPSData
+dataClass=com.telenav.jeff.vo.mileage.GPSData
 tableName=gps_data
 # --table-fields-start--
 # --field-start--
@@ -28,7 +28,7 @@ fieldName=heading
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.telenav.jeff.vo.Mileage
+dataClass=com.telenav.jeff.vo.mileage.Mileage
 tableName=mileage
 # --table-fields-start--
 # --field-start--
@@ -52,7 +52,7 @@ foreignAutoRefresh=true
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.telenav.jeff.vo.Segment
+dataClass=com.telenav.jeff.vo.mileage.Segment
 tableName=segment
 # --table-fields-start--
 # --field-start--
@@ -73,7 +73,7 @@ foreign=true
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.telenav.jeff.vo.Trip
+dataClass=com.telenav.jeff.vo.mileage.Trip
 tableName=trip
 # --table-fields-start--
 # --field-start--
@@ -121,7 +121,7 @@ fieldName=tollFee
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.telenav.jeff.vo.TripCategory
+dataClass=com.telenav.jeff.vo.mileage.TripCategory
 tableName=trip_category
 # --table-fields-start--
 # --field-start--

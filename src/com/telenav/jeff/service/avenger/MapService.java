@@ -1,4 +1,4 @@
-package com.telenav.jeff.avengerservice;
+package com.telenav.jeff.service.avenger;
 
 import java.io.BufferedReader;
 import java.io.IOException;

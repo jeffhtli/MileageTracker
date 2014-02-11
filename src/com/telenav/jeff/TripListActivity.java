@@ -20,7 +20,7 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.telenav.jeff.sqlite.DatabaseHelper;
 import com.telenav.jeff.trip.TripGenerator;
 import com.telenav.jeff.util.TextUtil;
-import com.telenav.jeff.vo.Trip;
+import com.telenav.jeff.vo.mileage.Trip;
 
 public class TripListActivity extends Activity
 {

@@ -15,10 +15,10 @@ import com.telenav.jeff.location.ILocationProvider;
 import com.telenav.jeff.location.MviewLocationProvider;
 import com.telenav.jeff.sqlite.DatabaseHelper;
 import com.telenav.jeff.util.TvMath;
-import com.telenav.jeff.vo.GPSData;
-import com.telenav.jeff.vo.Mileage;
-import com.telenav.jeff.vo.Segment;
-import com.telenav.jeff.vo.Trip;
+import com.telenav.jeff.vo.mileage.GPSData;
+import com.telenav.jeff.vo.mileage.Mileage;
+import com.telenav.jeff.vo.mileage.Segment;
+import com.telenav.jeff.vo.mileage.Trip;
 
 public class TripManager implements ILocationListener
 {

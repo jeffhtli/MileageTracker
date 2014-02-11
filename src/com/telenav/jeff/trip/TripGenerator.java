@@ -6,15 +6,15 @@ import android.util.Log;
 
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
-import com.telenav.jeff.avengerservice.MapService;
-import com.telenav.jeff.avengerservice.MapService.Address;
-import com.telenav.jeff.avengerservice.MapService.Direction;
+import com.telenav.jeff.service.avenger.MapService;
+import com.telenav.jeff.service.avenger.MapService.Address;
+import com.telenav.jeff.service.avenger.MapService.Direction;
 import com.telenav.jeff.sqlite.DatabaseHelper;
-import com.telenav.jeff.vo.GPSData;
-import com.telenav.jeff.vo.Mileage;
-import com.telenav.jeff.vo.Segment;
-import com.telenav.jeff.vo.Trip;
-import com.telenav.jeff.vo.TripCategory;
+import com.telenav.jeff.vo.mileage.GPSData;
+import com.telenav.jeff.vo.mileage.Mileage;
+import com.telenav.jeff.vo.mileage.Segment;
+import com.telenav.jeff.vo.mileage.Trip;
+import com.telenav.jeff.vo.mileage.TripCategory;
 
 public class TripGenerator
 {

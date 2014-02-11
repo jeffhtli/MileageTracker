@@ -1,6 +1,6 @@
 package com.telenav.jeff.location;
 
-import com.telenav.jeff.vo.GPSData;
+import com.telenav.jeff.vo.mileage.GPSData;
 
 public interface ILocationProvider
 {

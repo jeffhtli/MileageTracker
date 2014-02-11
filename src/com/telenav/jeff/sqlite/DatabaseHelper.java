@@ -12,11 +12,11 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.telenav.jeff.R;
-import com.telenav.jeff.vo.GPSData;
-import com.telenav.jeff.vo.Mileage;
-import com.telenav.jeff.vo.Segment;
-import com.telenav.jeff.vo.Trip;
-import com.telenav.jeff.vo.TripCategory;
+import com.telenav.jeff.vo.mileage.GPSData;
+import com.telenav.jeff.vo.mileage.Mileage;
+import com.telenav.jeff.vo.mileage.Segment;
+import com.telenav.jeff.vo.mileage.Trip;
+import com.telenav.jeff.vo.mileage.TripCategory;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper
 {

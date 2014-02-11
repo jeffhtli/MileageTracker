@@ -17,9 +17,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.telenav.jeff.MileageService.MileageServiceBinder;
+import com.telenav.jeff.service.concur.TokenManager;
 import com.telenav.jeff.sqlite.DatabaseHelper;
 import com.telenav.jeff.trip.TripManager;
-import com.telenav.jeff.vo.GPSData;
+import com.telenav.jeff.vo.mileage.GPSData;
 
 public class MainActivity extends Activity
 {
@@ -48,6 +49,7 @@ public class MainActivity extends Activity
     private void initialze()
     {
         DatabaseHelper.init(this);
+        TokenManager.init(this);
         
         serviceStatusTextView = (TextView) findViewById(R.id.statusfield);
         distanceTextView = (TextView) findViewById(R.id.distance_field);

@@ -7,7 +7,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.telenav.jeff.vo.GPSData;
+import com.telenav.jeff.vo.mileage.GPSData;
 
 public class MviewLocationProvider implements ILocationProvider
 {
