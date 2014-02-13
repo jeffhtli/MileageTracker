@@ -42,7 +42,7 @@ public class TripDetailsActivity extends Activity
         parkingTextView = (TextView)findViewById(R.id.detail_parking_textview);
         constTextView = (TextView)findViewById(R.id.detail_cost_textview);
         
-        int tripIndex = getIntent().getIntExtra("tripIndex", -1);
+        int tripIndex = TripModel.currentTripIndex;
         Trip trip = TripModel.tripList.get(tripIndex);
         
         dateTextView.setText(TextUtil.formatDate(trip.getStartTimeStamp()));
@@ -68,7 +68,7 @@ public class TripDetailsActivity extends Activity
                 }
                 else
                 {
-                    intent = new Intent(TripDetailsActivity.this, ExportToConcurActivity.class);
+                    intent = new Intent(TripDetailsActivity.this, ConcurSelectReportActivity.class);
                     intent.putExtra("isLogin", true);
                 }
                 startActivity(intent);

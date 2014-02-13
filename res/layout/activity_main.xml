@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ExportToConcurActivity" >
+    tools:context=".ConcurSelectReportActivity" >
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -59,7 +59,7 @@
             android:layout_marginTop="20dp">
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/mileage_date_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"

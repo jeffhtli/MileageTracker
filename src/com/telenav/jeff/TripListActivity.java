@@ -101,8 +101,8 @@ public class TripListActivity extends Activity
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                 {
+                    TripModel.currentTripIndex = position;
                     Intent intent = new Intent(TripListActivity.this, TripDetailsActivity.class);
-                    intent.putExtra("tripIndex", position);
                     startActivity(intent);
                 }
             });

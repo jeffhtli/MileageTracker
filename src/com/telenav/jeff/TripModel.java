@@ -8,5 +8,6 @@ public class TripModel
 {
     
     public static List<Trip> tripList;
+    public static int currentTripIndex;
 
 }

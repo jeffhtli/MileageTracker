@@ -16,5 +16,6 @@
     <string name="cost">Cost:</string>
     <string name="edit_btn">Edit</string>
     <string name="save_concur">Save To Concur</string>
+    <string name="concur_select_report">Select Report:</string>
 
 </resources>

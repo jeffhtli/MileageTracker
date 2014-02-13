@@ -98,7 +98,7 @@ public class ConcurLoginActivity extends Activity
     {
         if (loginResult.isLoginSuccessfully)
         {
-            Intent intent = new Intent(this, ExportToConcurActivity.class);
+            Intent intent = new Intent(this, ConcurSelectReportActivity.class);
             intent.putExtra("code", loginResult.code);
             
             startActivity(intent);

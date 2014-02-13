@@ -30,7 +30,14 @@
         <activity android:name=".TripDetailsActivity" >
         </activity>
         
-        <activity android:name=".ExportToConcurActivity" >
+        <activity android:name=".ConcurSelectReportActivity" >
+        </activity>
+        
+        <activity android:name=".ConcurCreateMileageReport" >
+        </activity>
+        
+        <activity 
+            android:name=".ConcurCreateReportActivity">
         </activity>
         
         <activity

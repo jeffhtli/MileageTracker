@@ -7,13 +7,19 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import android.text.format.DateFormat;
 import android.util.Log;
 
+import com.telenav.jeff.vo.concur.Field;
 import com.telenav.jeff.vo.concur.ReportSummary;
 
 public class ExpenseService extends ConcurService
 {
     private static final String URI_EXPENSE_REPORT_GET = "https://www.concursolutions.com/api/expense/expensereport/v2.0/Reports";
+    private static final String URI_FORM_FIELD_GET = "https://www.concursolutions.com/api/expense/expensereport/v1.1/report/Form/%s/Fields";
+    private static final String URI_REPORT_HEADER_POST = "https://www.concursolutions.com/api/expense/expensereport/v1.1/report";
+    
+    public static final String FORM_ID_DEFAULT = "nMWt0JheSaVjNFezXBZFcumkYNhCj127U";
     
     private static final String LOG_TAG = "ExpenseService";
     
@@ -27,6 +33,133 @@ public class ExpenseService extends ConcurService
         parse(data, handler);
         
         return  handler.getReportList();
+    }
+    
+    public List<Field> getReportFieldList(String formId)
+    {
+        byte[] data = get(String.format(URI_FORM_FIELD_GET, formId));
+        
+        Log.d(LOG_TAG, new String(data));
+        
+        FieldResponseHandler handler = new FieldResponseHandler();
+        parse(data, handler);
+        
+        return handler.getFeildList();
+    }
+    
+    public void postReportHeader(String xml)
+    {
+        byte[] data = post(URI_REPORT_HEADER_POST, xml);
+        
+        Log.d(LOG_TAG, new String(data));
+    }
+    
+    
+    
+    private class FieldResponseHandler extends DefaultHandler
+    {
+        
+        private String content;
+        private List<Field> fieldList = new Vector<Field>();
+        private Field field;
+        
+        @Override
+        public void characters(char[] ch, int start, int length) throws SAXException
+        {
+            content = new String(ch, start, length);
+            super.characters(ch, start, length);
+        }
+        
+        @Override
+        public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
+        {
+            if ("FormField".equalsIgnoreCase(localName))
+            {
+                field = new Field();
+            }
+            
+            super.startElement(uri, localName, qName, attributes);
+        }
+        
+        public void endElement(String uri, String localName, String qName) throws SAXException
+        {
+            if ("FormField".equalsIgnoreCase(localName))
+            {
+                fieldList.add(field);
+            }
+            else if (Field.ELEMENT_Id.equalsIgnoreCase(localName))
+            {
+                field.setId(content);
+            }
+            else if (Field.ELEMENT_Label.equalsIgnoreCase(localName))
+            {
+                field.setLabel(content);
+            }
+            else if (Field.ELEMENT_ControlType.equalsIgnoreCase(localName))
+            {
+                field.setControlType(content);
+            }
+            else if (Field.ELEMENT_DataType.equalsIgnoreCase(localName))
+            {
+                field.setDataType(content);
+            }
+            else if (Field.ELEMENT_MaxLength.equalsIgnoreCase(localName))
+            {
+                field.setMaxLength(getIntValue());
+            }
+            else if (Field.ELEMENT_Required.equalsIgnoreCase(localName))
+            {
+                field.setRequired(getBooleanValue());
+            }
+            else if (Field.ELEMENT_Cols.equalsIgnoreCase(localName))
+            {
+                field.setCols(getIntValue());
+            }
+            else if (Field.ELEMENT_Access.equalsIgnoreCase(localName))
+            {
+                field.setAccess(content);
+            }
+            else if (Field.ELEMENT_Width.equalsIgnoreCase(localName))
+            {
+                field.setWidth(getIntValue());
+            }
+            else if (Field.ELEMENT_Custom.equalsIgnoreCase(localName))
+            {
+                field.setCustom(getBooleanValue());
+            }
+            else if (Field.ELEMENT_Sequence.equalsIgnoreCase(localName))
+            {
+                field.setSequence(getIntValue());
+            }
+            
+            content = null;
+        }
+        
+        private int getIntValue()
+        {
+            int value = 0;
+            try
+            {
+               value =  Integer.valueOf(content);
+            }
+            catch (Exception e)
+            {
+            }
+            
+            return value;
+        }
+        
+        private boolean getBooleanValue()
+        {
+            return "Y".equalsIgnoreCase(content);
+        }
+        
+        
+        public List<Field> getFeildList()
+        {
+            return fieldList;
+        }
+        
     }
     
     private class ReportListResponseHandler extends DefaultHandler

@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -15,7 +16,9 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -31,10 +34,6 @@ public abstract class ConcurService
     private static final String HTTP_HEADER_AUTHORIZATION = "Authorization";
     private static final String HTTP_HEADER_ACCEPT = "Accept";
     private static final String LOG_TAG = "ConcurService";
-    
-    
-    
-    
     
     protected static HttpClient httpClient;
     
@@ -85,6 +84,29 @@ public abstract class ConcurService
     {
         HttpGet request = new HttpGet(url);
         return sendRequest(request);
+    }
+    
+    protected byte[] post(String url, String xmlString)
+    {
+        byte[] data = null;
+        
+        HttpPost request = new HttpPost(url);
+        StringEntity entity = null;
+        try
+        {
+            entity = new StringEntity(xmlString);
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            e.printStackTrace();
+        }
+        if (entity != null)
+        {
+            request.setEntity(entity);
+            data = sendRequest(request);
+        }
+
+        return data;
     }
     
     protected void parse(byte[] data, DefaultHandler handler)
