@@ -27,24 +27,32 @@ public class ExpenseService extends ConcurService
     {
         byte[] data = get(URI_EXPENSE_REPORT_GET);
         
-        Log.d(LOG_TAG, new String(data));
+        if (data != null)
+        {
+            Log.d(LOG_TAG, new String(data));
+            
+            ReportListResponseHandler handler = new ReportListResponseHandler();
+            parse(data, handler); 
+            return  handler.getReportList();
+        }
         
-        ReportListResponseHandler handler = new ReportListResponseHandler();
-        parse(data, handler);
-        
-        return  handler.getReportList();
+        return null;
     }
     
     public List<Field> getReportFieldList(String formId)
     {
         byte[] data = get(String.format(URI_FORM_FIELD_GET, formId));
         
-        Log.d(LOG_TAG, new String(data));
-        
-        FieldResponseHandler handler = new FieldResponseHandler();
-        parse(data, handler);
-        
-        return handler.getFeildList();
+        if (data != null)
+        {
+            Log.d(LOG_TAG, new String(data));
+            
+            FieldResponseHandler handler = new FieldResponseHandler();
+            parse(data, handler);
+            return handler.getFeildList();
+        }
+
+        return null;
     }
     
     public void postReportHeader(String xml)

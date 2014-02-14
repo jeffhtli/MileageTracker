@@ -22,7 +22,11 @@ public class TokenManager
     public static void init(Context context)
     {
         TokenManager.context = context;
-        
+        loadToken();
+    }
+    
+    private static void loadToken()
+    {
         SharedPreferences sharedPref = context.getSharedPreferences(PREFERENCE_TOKEN, Context.MODE_PRIVATE);
         String tokenstring = sharedPref.getString(Token.ELEMENT_TOKEN, null);
         token = new Token();
@@ -82,6 +86,7 @@ public class TokenManager
         editor.putString(Token.ELEMENT_EXPIRE_TIME, token.getExpireTime());
         editor.putString(Token.ELEMENT_REFRESH_TOKEN, token.getRefreshToken());
         editor.commit();
+        loadToken();
     }
     
     public static Token getToken()

@@ -1,6 +1,7 @@
 package com.telenav.jeff;
 
 import java.util.List;
+import java.util.Vector;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -168,12 +169,17 @@ public class ConcurSelectReportActivity extends Activity
     
     private Command getReporterListCommand()
     {
-        return new Command("Getting Reporter")
+        return new Command("Getting Report")
         {
             @Override
             public Void execute()
             {
                 reportList = new ExpenseService().getReportList();
+                
+                if (reportList == null)
+                {
+                    reportList = new Vector<ReportSummary>();
+                }
                 
                 ReportSummary summary = new ReportSummary();
                 summary.setReportName("Create new report...");

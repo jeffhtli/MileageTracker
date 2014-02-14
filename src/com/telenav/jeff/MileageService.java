@@ -20,7 +20,7 @@ public class MileageService extends Service
     public void onCreate()
     {
         Log.d(LOG_TAG, "onCreate");
-        tripManager = new TripManager();
+        tripManager = new TripManager(getApplicationContext());
     }
     
     @Override

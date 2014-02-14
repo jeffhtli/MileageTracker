@@ -20,9 +20,10 @@ import com.telenav.jeff.MileageService.MileageServiceBinder;
 import com.telenav.jeff.service.concur.TokenManager;
 import com.telenav.jeff.sqlite.DatabaseHelper;
 import com.telenav.jeff.trip.TripManager;
+import com.telenav.jeff.util.TextUtil;
 import com.telenav.jeff.vo.mileage.GPSData;
 
-public class MainActivity extends Activity
+public class MainActivity extends Activity implements IUIListener
 {
     private static final String LOG_TAG = "MainActivity";
     private TextView serviceStatusTextView;
@@ -33,7 +34,6 @@ public class MainActivity extends Activity
     
     private TripManager tripManager;
     private LocationServiceConnection locationServiceConnection;
-    private ScheduledExecutorService uiScheduleTask;
     private Intent mileageServiceIntent;
     
 
@@ -109,28 +109,14 @@ public class MainActivity extends Activity
         {
             serviceStatusTextView.setText("Started");
             serviceSwitchBtn.setText("Stop");
-            
-            uiScheduleTask = Executors.newScheduledThreadPool(1);
-            uiScheduleTask.scheduleAtFixedRate(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    updateDistAndLoc();
-                    
-                }
-            }, 0, 20, TimeUnit.SECONDS);
         }
         else
         {
             serviceStatusTextView.setText("Stopped");
             serviceSwitchBtn.setText("Start");
-            
-            if (uiScheduleTask != null)
-            {
-                uiScheduleTask.shutdown();
-            }
         }
+        
+        updateDistAndLoc();
          
     }
     
@@ -141,7 +127,7 @@ public class MainActivity extends Activity
             @Override
             public void run()
             {
-                distanceTextView.setText(tripManager.getCurrentDistance() + " Meters");
+                distanceTextView.setText(TextUtil.convert2Mile(tripManager.getCurrentDistance(), true));
                 
                 GPSData currentGPS = tripManager.getCurrentGPS();
                 String locString = "Unknown";
@@ -159,6 +145,7 @@ public class MainActivity extends Activity
         @Override
         public void onServiceDisconnected(ComponentName name)
         {
+            tripManager.setUIListener(null);
             tripManager = null;
         }
         
@@ -166,6 +153,7 @@ public class MainActivity extends Activity
         public void onServiceConnected(ComponentName name, IBinder service)
         {
             tripManager = ((MileageServiceBinder)service).getTripManager();
+            tripManager.setUIListener(MainActivity.this);
             updateViewContent(tripManager.isTracking());
         }
     }
@@ -181,5 +169,11 @@ public class MainActivity extends Activity
             stopService(mileageServiceIntent);
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void update()
+    {
+        updateDistAndLoc();
     }
 }

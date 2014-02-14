@@ -56,6 +56,11 @@ public class ConcurCreateReportActivity extends Activity
                 viewMap.put(field.getId(), view);
                 rootLayout.addView(view);
             }
+            
+            if (field.isRequired())
+            {
+                Log.d("ConcurCreateReportActivity", field.getId());
+            }
         }
         
         Button btn = new Button(this);

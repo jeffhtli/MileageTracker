@@ -76,15 +76,40 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
         RuntimeExceptionDao<TripCategory, Integer> tripCategoryDAO = getRuntimeExceptionDao(TripCategory.class);
         
         TripCategory category = new TripCategory();
-        category.setName("Business");
-        tripCategoryDAO.create(category);
-        
-        category = new TripCategory();
         category.setName("Personal");
         tripCategoryDAO.create(category);
         
+        category = new TripCategory();
+        category.setName("Business");
+        tripCategoryDAO.create(category);
+        
+        RuntimeExceptionDao<Trip, Integer> tripDAO = getRuntimeExceptionDao(Trip.class);
+        Trip trip = new Trip();
+        trip.setDistance(48000);
+        trip.setStartAddress("1130 Kifer Rd, Sunnyvalue, CA");
+        trip.setEndAddress("SFO");
+        trip.setStartTimeStamp(System.currentTimeMillis());
+        trip.setCategroy(category);
+        tripDAO.create(trip);
+        
+        trip = new Trip();
+        trip.setDistance(2400);
+        trip.setStartAddress("1155 Reed Avenue, Sunnyvalue, CA");
+        trip.setEndAddress("950 De Guigne Dr, Sunnyvale, CA 94085");
+        trip.setStartTimeStamp(System.currentTimeMillis());
+        trip.setCategroy(category);
+        tripDAO.create(trip);
+        
+        trip = new Trip();
+        trip.setDistance(13800);
+        trip.setStartAddress("Telenav");
+        trip.setEndAddress("San Jose, CA");
+        trip.setStartTimeStamp(System.currentTimeMillis());
+        trip.setCategroy(category);
+        tripDAO.create(trip);
+        
     }
-
+    
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource arg1, int arg2, int arg3)
     {

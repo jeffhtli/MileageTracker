@@ -1,15 +1,16 @@
 package com.telenav.jeff.trip;
 
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import android.content.Context;
 import android.util.Log;
 
-import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.telenav.jeff.IUIListener;
+import com.telenav.jeff.location.AndroidLocationProvider;
 import com.telenav.jeff.location.ILocationListener;
 import com.telenav.jeff.location.ILocationProvider;
 import com.telenav.jeff.location.MviewLocationProvider;
@@ -17,8 +18,6 @@ import com.telenav.jeff.sqlite.DatabaseHelper;
 import com.telenav.jeff.util.TvMath;
 import com.telenav.jeff.vo.mileage.GPSData;
 import com.telenav.jeff.vo.mileage.Mileage;
-import com.telenav.jeff.vo.mileage.Segment;
-import com.telenav.jeff.vo.mileage.Trip;
 
 public class TripManager implements ILocationListener
 {
@@ -37,6 +36,7 @@ public class TripManager implements ILocationListener
     private RuntimeExceptionDao<GPSData, Integer> gpsDataDAO;
     private RuntimeExceptionDao<Mileage, Integer> mileageDAO;
     private ScheduledExecutorService timeoutPool;
+    private IUIListener uiListener;
     
     private enum TripStatus
     {
@@ -44,10 +44,11 @@ public class TripManager implements ILocationListener
         Started
     }
     
-    public TripManager()
+    public TripManager(Context context)
     {
         status = TripStatus.NotStart;
-        locationProvider = new MviewLocationProvider();
+        //locationProvider = new MviewLocationProvider();
+        locationProvider = new AndroidLocationProvider(context);
         gpsDataDAO = DatabaseHelper.getInstance().getRuntimeExceptionDao(GPSData.class);
         mileageDAO = DatabaseHelper.getInstance().getRuntimeExceptionDao(Mileage.class);
     }
@@ -56,7 +57,7 @@ public class TripManager implements ILocationListener
     {
         if (! isStarted.get())
         {
-            locationProvider.requestLocationUpdate("", 10 * 1000, this);
+            locationProvider.requestLocationUpdate("", TripConfig.TIME_UPDATE_GPS, this);
             isStarted.set(true);
         }
     }
@@ -76,11 +77,6 @@ public class TripManager implements ILocationListener
     private void persistGPSData(GPSData data)
     {
         gpsDataDAO.create(data);
-    }
-
-    private boolean isValidGPS(GPSData data)
-    {
-        return true;
     }
 
     private void startNewTrip(GPSData data)
@@ -104,12 +100,12 @@ public class TripManager implements ILocationListener
             @Override
             public void run()
             {
-                if (System.currentTimeMillis() - timeStamp >= 60 * 1000)
+                if (System.currentTimeMillis() - timeStamp >= TripConfig.TIME_TRIP_AUTO_END)
                 {
                     saveCurrentTrip();
                 }
             }
-        }, 60, 30, TimeUnit.SECONDS);
+        }, 0, 30, TimeUnit.SECONDS);
     }
     
     private void saveCurrentTrip()
@@ -119,10 +115,17 @@ public class TripManager implements ILocationListener
         if (status == TripStatus.Started)
         {
             mileage.setEndLocation(currentGPS);
-            mileageDAO.create(mileage);
+            long dist = calcDistance(mileage.getStartLocation(), mileage.getEndLocation());
+            if (dist > TripConfig.DISTANCE_VALID_TRIP)
+            {
+                mileageDAO.create(mileage);
+            }
+            else
+            {
+                Log.d(LOG_TAG, "Trip distance is too short, abort!");
+            }
             
             timeoutPool.shutdown();
-            
             currentGPS = null;
             currentDistance = 0;
             status = TripStatus.NotStart;
@@ -133,13 +136,15 @@ public class TripManager implements ILocationListener
     public void locationUpdate(GPSData data)
     {
         Log.d(LOG_TAG, "new GPS arrive! ");
-        timeStamp = System.currentTimeMillis();
-        
-        if (isValidGPS(data))
+
+        long distance = calcDistance(currentGPS, data);
+        if (distance > TripConfig.DISTANCE_VALID_GPS || currentGPS == null)
         {
+            timeStamp = System.currentTimeMillis();
+            
             persistGPSData(data);
             
-            currentDistance += calcDistance(currentGPS, data);
+            currentDistance += distance;
             
             currentGPS = data;
             
@@ -147,6 +152,15 @@ public class TripManager implements ILocationListener
             {
                 startNewTrip(data);
             }
+            
+            if (uiListener != null)
+            {
+                uiListener.update();
+            }
+        }
+        else
+        {
+            Log.d(LOG_TAG, "invalid GPS, too close!");
         }
     }
     
@@ -177,6 +191,10 @@ public class TripManager implements ILocationListener
     {
         return this.currentDistance;
     }
-       
+    
+    public void setUIListener(IUIListener l)
+    {
+        this.uiListener = l;
+    }
     
 }
