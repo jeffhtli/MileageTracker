@@ -96,17 +96,23 @@ public class ConcurLoginActivity extends Activity
     
     private void nextView(LoginResult loginResult)
     {
-        if (loginResult.isLoginSuccessfully)
-        {
-            Intent intent = new Intent(this, ConcurSelectReportActivity.class);
-            intent.putExtra("code", loginResult.code);
-            
-            startActivity(intent);
-        }
-        else
-        {
-            Toast.makeText(this, "Login failed", Toast.LENGTH_LONG).show();
-        }
+//        if (loginResult.isLoginSuccessfully)
+//        {
+//            Intent intent = new Intent(this, ConcurSelectReportActivity.class);
+//            intent.putExtra("code", loginResult.code);
+//            
+//            startActivity(intent);
+//        }
+//        else
+//        {
+//            Toast.makeText(this, "Login failed", Toast.LENGTH_LONG).show();
+//        }
         
+        this.getIntent().putExtra("code", loginResult.code);
+        
+        Intent i = new Intent();
+        i.putExtra("code", loginResult.code);
+        this.setResult(1, i);
+        this.finish();
     }
 }

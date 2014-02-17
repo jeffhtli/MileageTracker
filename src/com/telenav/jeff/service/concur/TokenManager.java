@@ -8,6 +8,7 @@ import java.util.TimeZone;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
 
 import com.telenav.jeff.vo.concur.Token;
 
@@ -29,6 +30,7 @@ public class TokenManager
     {
         SharedPreferences sharedPref = context.getSharedPreferences(PREFERENCE_TOKEN, Context.MODE_PRIVATE);
         String tokenstring = sharedPref.getString(Token.ELEMENT_TOKEN, null);
+        Log.d("TokenManager", "token: " + tokenstring);
         token = new Token();
         if (tokenstring != null)
         {

@@ -8,6 +8,7 @@ import com.telenav.jeff.service.concur.ExpenseService;
 import com.telenav.jeff.vo.concur.Field;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -37,7 +38,7 @@ public class ConcurCreateReportActivity extends Activity
         
         viewMap = new HashMap<String, View>();
         
-        new ReortFieldTask().execute("");
+        new ReortFieldTask(this, "Getting report information").execute("");
     }
     
     private void addFields()
@@ -69,7 +70,7 @@ public class ConcurCreateReportActivity extends Activity
             @Override
             public void onClick(View v)
             {
-                new SubmitReportHeaderTask().execute("");
+                new SubmitReportHeaderTask(ConcurCreateReportActivity.this, "Save Report").execute("");
             }
         });
         btn.setText("Save");
@@ -109,8 +110,13 @@ public class ConcurCreateReportActivity extends Activity
     
 
 
-    private class ReortFieldTask extends AsyncTask<String, Void, Void>
+    private class ReortFieldTask extends SimpleAsyncTask
     {
+        public ReortFieldTask(Context context, String msg)
+        {
+            super(context, msg);
+        }
+
         @Override
         protected Void doInBackground(String... params)
         {
@@ -127,8 +133,13 @@ public class ConcurCreateReportActivity extends Activity
         
     }
     
-    private class SubmitReportHeaderTask extends AsyncTask<String, Void, Void>
+    private class SubmitReportHeaderTask extends SimpleAsyncTask
     {
+
+        public SubmitReportHeaderTask(Context context, String msg)
+        {
+            super(context, msg);
+        }
 
         @Override
         protected Void doInBackground(String... params)
@@ -143,7 +154,6 @@ public class ConcurCreateReportActivity extends Activity
             
             return null;
         }
-        
     }
     
     public class ReportHeaderParamer
