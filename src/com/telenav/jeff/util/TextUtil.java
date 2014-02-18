@@ -2,6 +2,8 @@ package com.telenav.jeff.util;
 
 import java.text.DecimalFormat;
 
+import com.telenav.jeff.vo.mileage.BtDevice;
+
 import android.text.format.DateFormat;
 
 public class TextUtil
@@ -31,5 +33,16 @@ public class TextUtil
         DecimalFormat df = new DecimalFormat("0.00$");
         double d = meters * 0.0006213712 * 0.555;
         return df.format(d);
+    }
+    
+    public static String getBtDevicePreferedName(BtDevice device)
+    {
+        String deviceName = device.getDefineName();
+        if (deviceName == null || "".equals(deviceName))
+        {
+            deviceName = device.getName();
+        }
+        
+        return deviceName;
     }
 }

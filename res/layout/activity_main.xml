@@ -46,6 +46,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
+                android:text="Is Your Car:"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/main_btstatus_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:text="Recognizing..." />
+
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
                 android:text="@string/stautslabel"
                 android:textSize="20dp" />
 
@@ -96,5 +118,13 @@
         android:layout_alignRight="@+id/switchbtn"
         android:layout_below="@+id/switchbtn"
         android:text="Button" />
+
+    <Button
+        android:id="@+id/main_bluetooth_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/historybtn"
+        android:layout_below="@+id/historybtn"
+        android:text="Config bluetooth" />
 
 </RelativeLayout>

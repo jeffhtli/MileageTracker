@@ -12,6 +12,7 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.telenav.jeff.R;
+import com.telenav.jeff.vo.mileage.BtDevice;
 import com.telenav.jeff.vo.mileage.GPSData;
 import com.telenav.jeff.vo.mileage.Mileage;
 import com.telenav.jeff.vo.mileage.Segment;
@@ -61,6 +62,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
             TableUtils.createTable(connectionSource, Segment.class);
             TableUtils.createTable(connectionSource, GPSData.class);
             TableUtils.createTable(connectionSource, Mileage.class);
+            TableUtils.createTable(connectionSource, BtDevice.class);
             
             initCategoryData();
         }
@@ -121,6 +123,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
             TableUtils.dropTable(connectionSource, Segment.class, true);
             TableUtils.dropTable(connectionSource, GPSData.class, true);
             TableUtils.dropTable(connectionSource, Mileage.class, true);
+            TableUtils.dropTable(connectionSource, BtDevice.class, true);
             
             onCreate(db, connectionSource);
         }
