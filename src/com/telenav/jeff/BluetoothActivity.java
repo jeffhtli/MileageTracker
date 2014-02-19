@@ -5,11 +5,13 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,6 +21,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,6 +30,7 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.telenav.jeff.bt.BtDiscoveryListener;
 import com.telenav.jeff.bt.BtService;
 import com.telenav.jeff.sqlite.DatabaseHelper;
+import com.telenav.jeff.util.TextUtil;
 import com.telenav.jeff.vo.mileage.BtDevice;
 
 public class BluetoothActivity extends Activity implements BtDiscoveryListener
@@ -45,7 +49,7 @@ public class BluetoothActivity extends Activity implements BtDiscoveryListener
     
     private LinearLayout searchLayout;
     
-    private BtDevice selectedBtDevice;
+    //private BtDevice selectedBtDevice;
     private RuntimeExceptionDao<BtDevice, Integer> btDeviceDAO;
 
     @Override
@@ -58,6 +62,15 @@ public class BluetoothActivity extends Activity implements BtDiscoveryListener
         savedDeviceList = (ListView)findViewById(R.id.bt_saved_device_listview);
         savedDeviceListAdapter = new BluetoothListAdapter(this, new ArrayList<BtDevice>());
         savedDeviceList.setAdapter(savedDeviceListAdapter);
+        savedDeviceList.setOnItemClickListener(new OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
+            {
+                BtDevice device = savedDeviceListAdapter.getItem(arg2);
+                showInputNameDialog(device, true);
+            }
+        });
         
         scanedDeviceList = (ListView)findViewById(R.id.bt_scaned_device_listview);
         scanedDeviceListAdapter = new BluetoothListAdapter(this, new ArrayList<BtDevice>());
@@ -67,8 +80,8 @@ public class BluetoothActivity extends Activity implements BtDiscoveryListener
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
             {
-                selectedBtDevice = scanedDeviceListAdapter.getItem(arg2);
-                showInputNameDialog();
+                BtDevice device = scanedDeviceListAdapter.getItem(arg2);
+                showInputNameDialog(device, false);
             }
         });
         
@@ -89,41 +102,64 @@ public class BluetoothActivity extends Activity implements BtDiscoveryListener
         loadDevice();
     }
     
-    private void showInputNameDialog()
+    private void showInputNameDialog(final BtDevice device, boolean needDelBtn)
     {
         final EditText view = new EditText(this);
         ViewGroup.LayoutParams layoutParam = new ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, 
             ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(layoutParam);
-        view.setText(selectedBtDevice.getName());
-        new AlertDialog.Builder(BluetoothActivity.this)
+        view.setText(TextUtil.getBtDevicePreferedName(device));
+        Builder dialogBuilder = new AlertDialog.Builder(BluetoothActivity.this)
             .setTitle("Input Name")
             .setView(view)
-            .setNegativeButton("OK", new DialogInterface.OnClickListener()
+            .setNegativeButton("Save", new DialogInterface.OnClickListener()
             {
                 @Override
                 public void onClick(DialogInterface dialog, int which)
                 {
-                    selectedBtDevice.setDefineName(view.getText().toString());
-                    saveDevice();
+                    device.setDefineName(view.getText().toString());
+                    saveDevice(device);
                 }
-            })
-            .show();
+            });
+        
+        if (needDelBtn)
+        {
+            dialogBuilder.setPositiveButton("Delete",new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                   removeDevice(device);
+                }
+            });
+        }
+        
+        dialogBuilder.show();
             
     }
     
-    private void saveDevice()
+    private void removeDevice(BtDevice device)
     {
-        BtDevice device = btDeviceDAO.queryForSameId(selectedBtDevice);
+        int ret = btDeviceDAO.delete(device);
+        if (ret >= 0)
+        {
+            savedDeviceListAdapter.remove(device); 
+        }
+    }
+
+    private void saveDevice(BtDevice btDevice)
+    {
+        BtDevice device = btDeviceDAO.queryForSameId(btDevice);
         if (device != null)
         {
-            btDeviceDAO.update(selectedBtDevice);
+            btDeviceDAO.update(btDevice);
+            savedDeviceListAdapter.notifyDataSetChanged();
         }
         else
         {
-            btDeviceDAO.create(selectedBtDevice);
-            savedDeviceListAdapter.insert(selectedBtDevice, 0);
+            btDeviceDAO.create(btDevice);
+            savedDeviceListAdapter.insert(btDevice, 0);
         }
         
     }
@@ -229,14 +265,14 @@ public class BluetoothActivity extends Activity implements BtDiscoveryListener
     @Override
     public void discoveryStarted()
     {
-        // TODO Auto-generated method stub
+        searchLayout.setVisibility(View.VISIBLE);
         
     }
 
     @Override
     public void discoveryFinished()
     {
-        // TODO Auto-generated method stub
+        searchLayout.setVisibility(View.GONE);
         
     }
 }
