@@ -1,29 +1,15 @@
 package com.telenav.jeff.service.avenger;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Vector;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
 
-public class MapService
+public class MapService extends AvengerService
 {
     private static final String DIRECTION_URL = "http://avengersdev.telenav.com/maps/v1/directions/json?origin=%s,%s&destination=%s,%s&max_route_number=1";
     private static final String RGC_URL = "http://avengersdev.telenav.com/entity/v1/search/json?query=%s&offset=0&limit=10&geo_source=Tomtom&entity_source=Telenav";
@@ -128,49 +114,5 @@ public class MapService
         return address;
     }
     
-    private static String getJson(String url)
-    {
-        HttpClient client = new DefaultHttpClient();
-        BufferedReader br = null;
-        try
-        {
-            HttpGet request = new HttpGet(url);
-            HttpResponse response = client.execute(request);
-            StatusLine statusLine = response.getStatusLine();
-            HttpEntity entity = response.getEntity();
-            
-            if (statusLine.getStatusCode() == HttpStatus.SC_OK)
-            {
-                br = new BufferedReader(new InputStreamReader(entity.getContent()));
-                String tmp = "";
-                StringBuffer sb = new StringBuffer();
-                while ((tmp = br.readLine()) != null)
-                {
-                    sb.append(tmp);
-                }
-                
-                String json = sb.toString();
-                Log.d(LOG_TAG, json);
-
-                return json;
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                br.close();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        
-        return null;
-    }
+    
 }

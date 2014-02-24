@@ -6,7 +6,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp" >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp" >
 
         <TextView
             android:id="@+id/trip_date"
@@ -23,7 +24,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp" >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp" >
 
         <TextView
             android:id="@+id/start_location_label"
@@ -31,15 +33,70 @@
             android:layout_height="wrap_content"
             android:text="@string/start_location_label" />
 
-        <TextView
-            android:id="@+id/detail_start_location_textview"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/detail_start_location_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kifer Rd, Sunnyvalue, CA" />
+
+            <LinearLayout
+                android:id="@+id/trip_details_from_contact_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Contacts:" />
+
+                <TextView
+                    android:id="@+id/trip_details_fromlocation_contacts_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ProgressBar
+                    android:id="@+id/trip_details_fromlocation_progress"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/trip_details_from_calendar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Calendar:" />
+
+                <TextView
+                    android:id="@+id/trip_details_fromlocation_calendar_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ProgressBar
+                    android:id="@+id/trip_details_fromlocation_calendar_progress"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp" >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp" >
 
         <TextView
             android:id="@+id/TextView03"
@@ -47,15 +104,70 @@
             android:layout_height="wrap_content"
             android:text="@string/end_location_label" />
 
-        <TextView
-            android:id="@+id/detail_end_location_textview"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/detail_end_location_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="San Francisco Airport" />
+
+            <LinearLayout
+                android:id="@+id/trip_details_to_contact_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Contacts:" />
+
+                <TextView
+                    android:id="@+id/trip_details_tolocation_contacts_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ProgressBar
+                    android:id="@+id/trip_details_tolocation_progress"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/trip_details_tolocation_calendar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Calendar:" />
+
+                <TextView
+                    android:id="@+id/trip_details_tolocation_calendar_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ProgressBar
+                    android:id="@+id/trip_details_tolocation_calendar_progress"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp" >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp" >
 
         <TextView
             android:id="@+id/TextView06"
@@ -71,7 +183,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp" >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp" >
 
         <TextView
             android:id="@+id/listitem_date_textview"
@@ -87,7 +200,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp" >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp" >
 
         <TextView
             android:id="@+id/TextView04"
@@ -103,7 +217,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp" >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp" >
 
         <TextView
             android:id="@+id/TextView05"
@@ -119,7 +234,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp" >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp" >
 
         <TextView
             android:id="@+id/TextView07"

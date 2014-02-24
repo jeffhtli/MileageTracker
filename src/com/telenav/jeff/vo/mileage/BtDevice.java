@@ -15,7 +15,7 @@ public class BtDevice
     
     @DatabaseField(id = true)
     private String macAddress;
-
+  
     public String getDefineName()
     {
         return defineName;

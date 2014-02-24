@@ -76,7 +76,7 @@ public class TvMath {
                 return delta;
         }
         
-    public static long calcDist(double lat1, double lon1, double lat2, double lon2) throws Exception
+    public static long calcDist(double lat1, double lon1, double lat2, double lon2)
     {
         double R = 6371; // km
         double dlat = Math.toRadians(lat2 - lat1);

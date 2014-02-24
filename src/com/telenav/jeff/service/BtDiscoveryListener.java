@@ -1,4 +1,4 @@
-package com.telenav.jeff.bt;
+package com.telenav.jeff.service;
 
 import com.telenav.jeff.vo.mileage.BtDevice;
 

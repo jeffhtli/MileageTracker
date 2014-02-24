@@ -12,21 +12,31 @@ public abstract class SimpleAsyncTask extends AsyncTask<String, Void, Void>
     public SimpleAsyncTask(Context context, String msg)
     {
         this.context = context;
-        progress = new ProgressDialog(context); 
-        progress.setMessage(msg);
+        if (msg != null)
+        {
+            progress = new ProgressDialog(context); 
+            progress.setMessage(msg);
+        }
     }
     
     @Override
     protected void onPreExecute()
     {
-        progress.show();
+        if (progress != null)
+        {
+            progress.show();
+        }
+        
         super.onPreExecute();
     }
     
     @Override
     protected void onPostExecute(Void result)
     {
-        progress.dismiss();
+        if (progress != null)
+        {
+            progress.dismiss();
+        }
         super.onPostExecute(result);
     }
     

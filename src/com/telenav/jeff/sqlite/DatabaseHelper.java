@@ -13,6 +13,8 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.telenav.jeff.R;
 import com.telenav.jeff.vo.mileage.BtDevice;
+import com.telenav.jeff.vo.mileage.CalendarAddress;
+import com.telenav.jeff.vo.mileage.ContactsAddress;
 import com.telenav.jeff.vo.mileage.GPSData;
 import com.telenav.jeff.vo.mileage.Mileage;
 import com.telenav.jeff.vo.mileage.Segment;
@@ -63,6 +65,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
             TableUtils.createTable(connectionSource, GPSData.class);
             TableUtils.createTable(connectionSource, Mileage.class);
             TableUtils.createTable(connectionSource, BtDevice.class);
+            TableUtils.createTable(connectionSource, ContactsAddress.class);
+            TableUtils.createTable(connectionSource, CalendarAddress.class);
             
             initCategoryData();
         }
@@ -75,6 +79,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
     
     private void initCategoryData()
     {
+        //Category
         RuntimeExceptionDao<TripCategory, Integer> tripCategoryDAO = getRuntimeExceptionDao(TripCategory.class);
         
         TripCategory category = new TripCategory();
@@ -85,31 +90,45 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
         category.setName("Business");
         tripCategoryDAO.create(category);
         
+        //GPSData
+        RuntimeExceptionDao<GPSData, Integer> gpsDataDAO = getRuntimeExceptionDao(GPSData.class);
+        
+        GPSData kifer = new GPSData();
+        kifer.setLat(37.373912);
+        kifer.setLon(-121.999046);
+        gpsDataDAO.create(kifer);
+        
+        GPSData guigne = new GPSData();
+        guigne.setLat(37.386993);
+        guigne.setLon(-122.004887);
+        gpsDataDAO.create(guigne);
+        
+        GPSData sfo = new GPSData();
+        sfo.setLat(37.613861);
+        sfo.setLon(-122.39382);
+        gpsDataDAO.create(sfo);
+        
+        //Trip
         RuntimeExceptionDao<Trip, Integer> tripDAO = getRuntimeExceptionDao(Trip.class);
         Trip trip = new Trip();
         trip.setDistance(48000);
         trip.setStartAddress("1130 Kifer Rd, Sunnyvalue, CA");
-        trip.setEndAddress("SFO");
+        trip.setStartLocation(kifer);
+        trip.setEndAddress("San Francisco Airport");
+        trip.setEndLocation(sfo);
         trip.setStartTimeStamp(System.currentTimeMillis());
         trip.setCategroy(category);
         tripDAO.create(trip);
         
         trip = new Trip();
-        trip.setDistance(2400);
-        trip.setStartAddress("1155 Reed Avenue, Sunnyvalue, CA");
-        trip.setEndAddress("950 De Guigne Dr, Sunnyvale, CA 94085");
+        trip.setDistance(40000);
+        trip.setStartAddress("San Francisco Airport");
+        trip.setStartLocation(sfo);
+        trip.setEndAddress("950 De Guigne Dr, Sunnyvale, CA");
+        trip.setEndLocation(guigne);
         trip.setStartTimeStamp(System.currentTimeMillis());
         trip.setCategroy(category);
         tripDAO.create(trip);
-        
-        trip = new Trip();
-        trip.setDistance(13800);
-        trip.setStartAddress("Telenav");
-        trip.setEndAddress("San Jose, CA");
-        trip.setStartTimeStamp(System.currentTimeMillis());
-        trip.setCategroy(category);
-        tripDAO.create(trip);
-        
     }
     
     @Override
@@ -124,6 +143,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
             TableUtils.dropTable(connectionSource, GPSData.class, true);
             TableUtils.dropTable(connectionSource, Mileage.class, true);
             TableUtils.dropTable(connectionSource, BtDevice.class, true);
+            TableUtils.dropTable(connectionSource, ContactsAddress.class, true);
+            TableUtils.dropTable(connectionSource, CalendarAddress.class, true);
             
             onCreate(db, connectionSource);
         }

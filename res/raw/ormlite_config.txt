@@ -1,5 +1,5 @@
 #
-# generated on 2014/02/18 10:56:18
+# generated on 2014/02/24 09:36:26
 #
 # --table-start--
 dataClass=com.telenav.jeff.vo.mileage.BtDevice
@@ -14,6 +14,52 @@ fieldName=name
 # --field-start--
 fieldName=macAddress
 id=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.telenav.jeff.vo.mileage.CalendarAddress
+tableName=calendar_address
+# --table-fields-start--
+# --field-start--
+fieldName=id
+id=true
+# --field-end--
+# --field-start--
+fieldName=address
+# --field-end--
+# --field-start--
+fieldName=lat
+# --field-end--
+# --field-start--
+fieldName=lon
+# --field-end--
+# --field-start--
+fieldName=name
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.telenav.jeff.vo.mileage.ContactsAddress
+tableName=contacts_address
+# --table-fields-start--
+# --field-start--
+fieldName=id
+id=true
+# --field-end--
+# --field-start--
+fieldName=address
+# --field-end--
+# --field-start--
+fieldName=lat
+# --field-end--
+# --field-start--
+fieldName=lon
+# --field-end--
+# --field-start--
+fieldName=name
 # --field-end--
 # --table-fields-end--
 # --table-end--

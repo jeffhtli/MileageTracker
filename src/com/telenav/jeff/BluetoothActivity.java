@@ -27,8 +27,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.j256.ormlite.dao.RuntimeExceptionDao;
-import com.telenav.jeff.bt.BtDiscoveryListener;
-import com.telenav.jeff.bt.BtService;
+import com.telenav.jeff.service.BtDiscoveryListener;
+import com.telenav.jeff.service.BtService;
 import com.telenav.jeff.sqlite.DatabaseHelper;
 import com.telenav.jeff.util.TextUtil;
 import com.telenav.jeff.vo.mileage.BtDevice;

@@ -1,6 +1,7 @@
 package com.telenav.jeff;
 
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -17,8 +18,10 @@ import android.widget.TextView;
 
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.telenav.jeff.MileageService.MileageServiceBinder;
-import com.telenav.jeff.bt.BtDiscoveryListener;
-import com.telenav.jeff.bt.BtService;
+import com.telenav.jeff.service.BtDiscoveryListener;
+import com.telenav.jeff.service.BtService;
+import com.telenav.jeff.service.CalendarService;
+import com.telenav.jeff.service.ContactsService;
 import com.telenav.jeff.service.concur.TokenManager;
 import com.telenav.jeff.sqlite.DatabaseHelper;
 import com.telenav.jeff.trip.TripManager;
@@ -63,6 +66,9 @@ public class MainActivity extends Activity implements IUIListener, BtDiscoveryLi
         btDeviceDAO = DatabaseHelper.getInstance().getRuntimeExceptionDao(BtDevice.class);
         
         TokenManager.init(this);
+        
+        ContactsService.getInstance().init(this);
+        CalendarService.getInstance().init(this);
         
         initView();
         
@@ -129,6 +135,13 @@ public class MainActivity extends Activity implements IUIListener, BtDiscoveryLi
         startService(mileageServiceIntent);
         locationServiceConnection = new LocationServiceConnection();
         bindService(mileageServiceIntent, locationServiceConnection, BIND_AUTO_CREATE);
+        
+        new Thread(){
+            public void run() {
+                ContactsService.getInstance().syncContacts();
+                CalendarService.getInstance().syncCalendar();
+            };
+        }.start();
     }
 
     private void updateViewContent(boolean isLocServiceStarted)
